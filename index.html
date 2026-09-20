@@ -1,9 +1,16 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
 <meta charset="utf-8">
-<title>Factorial IT — Ecosistema</title>
+<title>Factorial IT — Client Journey to digitalisation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+/* ============================================================
+   PART 1 — the ecosystem map, unchanged from index.html
+   ============================================================ */
+
   :root{
     --crimson:#FF355D;
     --coral:#FA816D;
@@ -213,8 +220,205 @@
     .card,.chip,#hub,#one{opacity:1!important;transform:none!important;animation:none!important}
     #one{transform:translateX(-50%)!important}
   }
-</style>
 
+/* ============================================================
+   PART 2 — the journey that leads into it.
+   Everything here is prefixed j- so it can never collide
+   with the map's own selectors above.
+   ============================================================ */
+
+  /* both boards are full-screen overlays, each scaled by its own script */
+  body{ position:relative; display:block; }
+  .jwrap{
+    position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;
+  }
+  #mwrap{opacity:0;pointer-events:none;transition:opacity .55s ease}
+  #mwrap.instant, #jwrap.instant{transition:none}
+  #mwrap.on{opacity:1;pointer-events:auto}
+  #jwrap{z-index:5;cursor:pointer;transition:opacity .5s ease}
+  #jwrap.gone{opacity:0;pointer-events:none}
+
+  #jstage{
+    position:relative;width:1600px;height:900px;flex:0 0 auto;
+    transform-origin:center center;overflow:hidden;
+    background:
+      radial-gradient(120% 130% at 100% 0%,   rgba(250,129,110,.95) 0%, rgba(250,129,110,0) 55%),
+      radial-gradient(110% 120% at 100% 100%, rgba(230,146,182,.95) 0%, rgba(230,146,182,0) 52%),
+      radial-gradient(120% 120% at 0% 100%,   rgba(251,70,111,.75) 0%,  rgba(251,70,111,0) 60%),
+      linear-gradient(135deg,#FF355D 0%,#FF2E5E 45%,#FF4A6B 100%);
+  }
+  #jstage::after{
+    content:"";position:absolute;inset:22px 22px 70px;border:2px solid rgba(255,255,255,.42);
+    border-radius:34px;pointer-events:none;z-index:30;
+  }
+
+  .jscene{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease}
+  .jscene.on{opacity:1}
+
+  /* ---- cover ---- */
+  #jcover{display:flex;align-items:center;justify-content:center}
+  #jlogo{
+    width:520px;height:auto;display:block;opacity:0;transform:scale(.9);
+    animation:jpop .8s cubic-bezier(.2,.9,.25,1.05) .15s forwards;
+  }
+  #jcover.leaving #jlogo{animation:none;opacity:0;transform:scale(1.06);
+    transition:opacity .4s ease, transform .5s cubic-bezier(.4,0,.2,1)}
+  #jrelatore{
+    position:absolute;right:54px;bottom:0;height:690px;width:auto;display:block;
+    filter:drop-shadow(0 26px 46px rgba(120,0,30,.34));
+    opacity:0;transform:translateY(26px);
+    transition:opacity .7s ease .35s, transform .7s cubic-bezier(.2,.9,.25,1.05) .35s;
+  }
+  #jrelatore.ready{opacity:1;transform:translateY(0)}
+  /* ---- timeline ---- */
+  #jtrail{position:absolute;inset:0;width:1600px;height:900px;pointer-events:none}
+  .jpin{
+    position:absolute;z-index:6;width:18px;height:18px;
+    transform:translate(-50%,-50%);opacity:0;
+  }
+  .jpin.on{animation:jpin .5s cubic-bezier(.2,.9,.25,1.05) forwards}
+  .jpin .dot{
+    width:100%;height:100%;border-radius:50%;background:rgba(255,255,255,.95);
+    box-shadow:0 0 0 7px rgba(255,255,255,.13), 0 4px 12px rgba(120,0,30,.18);
+  }
+  .jpin .yr{
+    position:absolute;left:50%;top:calc(100% + 13px);transform:translateX(-50%);
+    font-size:20px;font-weight:600;letter-spacing:-.01em;
+    color:rgba(255,255,255,.82);white-space:nowrap;
+  }
+  .jphrase{
+    position:absolute;left:280px;width:372px;z-index:5;
+    opacity:0;transform:translateY(12px);
+    transition:opacity .5s ease, transform .5s cubic-bezier(.2,.9,.25,1.05);
+  }
+  .jphrase.on{opacity:1;transform:translateY(0)}
+  .jphrase.on.past{opacity:.3}
+  .jphrase .halo{position:absolute;inset:-46px -34px;z-index:-1}
+  .jphrase p{font-size:25px;font-weight:600;line-height:1.34;letter-spacing:-.02em;
+    color:rgba(255,255,255,.80)}
+  .jtype .ghost{visibility:hidden}
+  .jtype .shown{position:relative}
+  .jtype.typing .shown::after{
+    content:"";position:absolute;left:100%;top:.16em;width:2px;height:1em;
+    background:currentColor;animation:jcaret .7s steps(1) infinite;
+  }
+
+  /* the map's own card, rebuilt here so the two read as one deck */
+  .jcard{
+    position:absolute;display:flex;align-items:center;gap:15px;
+    background:#fff;border-radius:20px;padding:15px 26px 15px 15px;
+    box-shadow:0 14px 34px rgba(120,0,30,.20), 0 2px 6px rgba(120,0,30,.10);
+    white-space:nowrap;opacity:0;transform:scale(.86);
+    transition:left .75s cubic-bezier(.4,0,.2,1), top .75s cubic-bezier(.4,0,.2,1),
+               opacity .45s ease;
+  }
+  .jcard.on{animation:jpop .5s cubic-bezier(.2,.9,.25,1.05) forwards}
+  .jcard.past{
+    animation:none;opacity:.32;transform:scale(1);
+    box-shadow:0 6px 16px rgba(120,0,30,.10);
+  }
+  .jcard.gone{opacity:0 !important;animation:none;transition:opacity .4s ease}
+  .jtile{width:46px;height:46px;border-radius:13px;flex:0 0 auto;
+    display:flex;align-items:center;justify-content:center}
+  .jtile svg{width:24px;height:24px}
+  .jcard .jlabel{font-size:23px;font-weight:600;letter-spacing:-.015em;color:#101124}
+
+  /* ---- the handover: the map's own avatar, already in its final place ---- */
+  #jhub{
+    position:absolute;left:802px;top:419px;width:150px;height:150px;
+    margin:-75px 0 0 -75px;z-index:8;opacity:0;transform:scale(.8);
+  }
+  #jhub.on{animation:jpop .7s cubic-bezier(.2,.9,.25,1.05) forwards}
+  #jhub svg{width:100%;height:100%;display:block;
+    filter:drop-shadow(0 14px 30px rgba(120,0,30,.28))}
+  /* same cloud treatment as the timeline lines */
+  #jword{
+    position:absolute;left:952px;top:419px;transform:translateY(-50%);
+    width:372px;z-index:8;opacity:0;transition:opacity .45s ease;
+  }
+  #jword.on{opacity:1}
+  #jword .halo{position:absolute;inset:-48px -38px;z-index:-1}
+  #jword p{
+    font-size:25px;font-weight:600;line-height:1.34;letter-spacing:-.02em;
+    color:rgba(255,255,255,.80);
+  }
+
+  @keyframes jpop{to{opacity:1;transform:scale(1)}}
+  @keyframes jpin{
+    from{opacity:0;transform:translate(-50%,-50%) scale(.4)}
+    to{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  }
+  @keyframes jfade{to{opacity:1}}
+  @keyframes jdraw{to{stroke-dashoffset:0}}
+  @keyframes jcaret{0%,49%{opacity:1}50%,100%{opacity:0}}
+  @media (prefers-reduced-motion: reduce){
+    .jpin,.jcard,.jphrase,#jlogo{animation:none!important;transition:none!important;opacity:1}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== the journey, on top until it hands over ===== -->
+<div class="jwrap" id="jwrap">
+  <div id="jstage">
+
+    <div class="jscene on" id="jcover">
+      <svg id="jlogo" viewBox="0 0 172 36" fill="none" xmlns="http://www.w3.org/2000/svg"></svg>
+      <img id="jrelatore" alt="">
+    </div>
+
+    <div class="jscene" id="jjourney">
+      <svg id="jtrail" viewBox="0 0 1600 900" aria-hidden="true">
+        <defs>
+          <filter id="jsoft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="15"/></filter>
+          <filter id="jsoft2" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="5"/></filter>
+          <filter id="jhalo" x="-30%" y="-50%" width="160%" height="200%"><feGaussianBlur stdDeviation="26"/></filter>
+          <linearGradient id="jfadeW" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stop-color="#fff" stop-opacity=".20"/>
+            <stop offset="82%" stop-color="#fff" stop-opacity=".20"/>
+            <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="jfadeC" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stop-color="#fff" stop-opacity=".34"/>
+            <stop offset="80%" stop-color="#fff" stop-opacity=".34"/>
+            <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path id="jtrailWide" fill="none" stroke="url(#jfadeW)"
+              stroke-width="34" stroke-linecap="round" filter="url(#jsoft)"/>
+        <path id="jtrailCore" fill="none" stroke="url(#jfadeC)"
+              stroke-width="11" stroke-linecap="round" filter="url(#jsoft2)"/>
+      </svg>
+      <div id="jpins"></div>
+      <div id="jphrases"></div>
+    </div>
+
+    <div id="jcards" style="position:absolute;inset:0;z-index:7;pointer-events:none"></div>
+
+    <div id="jhub">
+      <svg viewBox="0 0 100 100">
+        <path d="M18 68 A38 38 0 1 1 82 68" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round"/>
+        <circle cx="50" cy="45" r="15" fill="#fff"/>
+        <path d="M27 79 A26 21 0 0 1 73 79 A26 21 0 0 1 27 79Z" fill="#fff"/>
+      </svg>
+    </div>
+    <div id="jword">
+      <svg class="halo" viewBox="0 0 400 150" preserveAspectRatio="none">
+        <g filter="url(#jhalo)" fill="#fff" fill-opacity=".14">
+          <ellipse cx="120" cy="84" rx="98" ry="48"/>
+          <ellipse cx="212" cy="62" rx="90" ry="44"/>
+          <ellipse cx="288" cy="86" rx="82" ry="42"/>
+        </g>
+      </svg>
+      <p class="jtype"></p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== the map, revealed at the end ===== -->
+<div class="jwrap" id="mwrap">
 <div id="stage">
   <svg id="wires" viewBox="0 0 1600 900"></svg>
 
@@ -252,8 +456,345 @@
     <div class="txt"><span class="t1 label" data-text="ONE"></span><span class="t2 label" data-text="Smart Insights"></span></div>
   </div>
 </div>
+</div>
 
 <script>
+/* ============================================================
+   PART 2 — the journey. Runs first, hands the stage to the map.
+   ============================================================ */
+window.J_ACTIVE = true;   // the map's keyboard stays parked until we're done
+
+(function(){
+
+const I = {
+  monitor:'<path d="M3 4h18v12H3z"/><path d="M8 20h8M12 16v4"/>',
+  cloud:'<path d="M6.5 19a4.5 4.5 0 0 1-.4-9A6 6 0 0 1 17.6 9.6 3.7 3.7 0 0 1 17.5 19z"/>',
+  shieldPlus:'<path d="M12 3l7.5 3v6c0 4.6-3.1 7.9-7.5 9-4.4-1.1-7.5-4.4-7.5-9V6z"/><path d="M12 9v6M9 12h6"/>',
+  badge:'<path d="M12 3l2.2 1.8 2.8-.3 .9 2.7 2.4 1.5-1 2.7 1 2.7-2.4 1.5-.9 2.7-2.8-.3L12 20l-2.2-1.8-2.8.3-.9-2.7L3.7 14.3l1-2.7-1-2.7 2.4-1.5.9-2.7 2.8.3z"/>',
+  coin:'<circle cx="12" cy="12" r="8.6"/><path d="M12 7.4v9.2M14.4 9.4c-.6-.7-1.5-1-2.4-1-1.4 0-2.4.8-2.4 1.9 0 2.6 5 1.4 5 4 0 1.2-1.1 2-2.6 2-1 0-2-.4-2.6-1.1"/>',
+  receipt:'<path d="M5 3h14v18l-2.3-1.6L14.4 21l-2.4-1.6L9.6 21l-2.3-1.6L5 21z"/><path d="M8.5 8.5h7M8.5 12.5h7"/>',
+  userPlus:'<circle cx="9.5" cy="8" r="3.6"/><path d="M3 19.5a6.5 6.5 0 0 1 13 0"/><path d="M18.5 8.5v5M16 11h5"/>',
+  pulse:'<path d="M2.5 12h4L9 6.5l3.4 11L15 12h6.5"/>',
+  book:'<path d="M4 4.5A2 2 0 0 1 6 3h13v16H6a2 2 0 0 0-2 2z"/><path d="M19 15.8H6a2 2 0 0 0-2 2"/>',
+  clock:'<circle cx="12" cy="12" r="8.6"/><path d="M12 6.8V12l3.4 2.2"/>',
+  folder:'<path d="M3 6.5A1.8 1.8 0 0 1 4.8 4.7h4.1l2 2.4H19a1.8 1.8 0 0 1 1.8 1.8v8.4A1.8 1.8 0 0 1 19 19.1H4.8A1.8 1.8 0 0 1 3 17.3z"/>',
+  palm:'<path d="M12 11v9.5"/><path d="M12 11c0-3.2 2.1-5.2 5.1-5.2 1.9 0 3.1 1 3.4 2M12 11c0-3.2-2.1-5.2-5.1-5.2-1.9 0-3.1 1-3.4 2M12 11c2-2.1 5.1-2.7 7.3-1.4M12 11c-2-2.1-5.1-2.7-7.3-1.4"/>',
+  spark:'<path d="M12 3.4 14 9.2l5.8 2-5.8 2-2 5.8-2-5.8-5.8-2 5.8-2z"/><path d="M18.7 16.2l.75 2.1 2.1.75-2.1.75-.75 2.1-.75-2.1-2.1-.75 2.1-.75z"/>',
+  ticket:'<path d="M3 8.5V6a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v2.5a2.6 2.6 0 0 0 0 7V18a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-2.5a2.6 2.6 0 0 0 0-7z"/><path d="M13 6.5v11"/>'
+};
+
+const STOPS = [
+  { yr:'2016', y:760,
+    text:"L'idea che fa nascere tutto.",
+    mods:[['palm','Ferie e permessi','#FFF6E6','#F0A81E'],
+          ['coin','Buste paga','#E4F7EF','#22B98C'],
+          ['badge','Benefits','#E4F7EF','#22B98C']]},
+  { yr:'', y:474,
+    text:"Cambiano i modi di operare delle aziende: il Covid porta il remote work in ogni realt\u00e0.",
+    mods:[['userPlus','Assunzioni','#FFE6EA','#FF2556'],
+          ['pulse','Performance','#FFE6EA','#FF2556'],
+          ['book','LMS e Formazione','#FFE6EA','#FF2556'],
+          ['clock','Rilevazione Presenze','#FFF6E6','#F0A81E'],
+          ['folder','Progetti','#FFF6E6','#F0A81E'],
+          ['receipt','Spese','#E4F7EF','#22B98C']]},
+  { yr:'2026', y:238,
+    text:"L'era della trasformazione digitale, del cloud e dell'AI.",
+    mods:[['spark','ONE','#E9F1FF','#317BF0'],
+          ['monitor','Gestione Dispositivi','#FFE6EA','#FF2556'],
+          ['cloud','Gestione SaaS','#E0F4F5','#00A0B0'],
+          ['shieldPlus','Sicurezza','#FFF6E6','#F0A81E'],
+          ['ticket','Help Desk','#EEEBFD','#7260F6']]}
+];
+
+const TRAIL_D =
+  "M186 760 C232 712, 148 684, 164 634 C180 584, 230 562, 216 512 " +
+  "C202 462, 144 438, 157 388 C170 338, 220 314, 206 264 C196 228, 184 212, 181 186 " +
+  "C177 152, 172 126, 170 88";        // the tail past the last stop: the story is not over
+
+const COL_X = [690, 1120], ROW_TOP = 136, PITCH = 90, ROWS = 7;
+
+const jstage = document.getElementById('jstage');
+const jwrap  = document.getElementById('jwrap');
+const mwrap  = document.getElementById('mwrap');
+const cardsWrap = document.getElementById('jcards');
+
+document.getElementById('jtrailWide').setAttribute('d', TRAIL_D);
+document.getElementById('jtrailCore').setAttribute('d', TRAIL_D);
+
+document.getElementById('jlogo').innerHTML =
+  '<path d="M29.3337 31.9846C26.2393 34.4955 22.2954 36 18 36C13.7046 36 9.76066 34.4955 6.66634 31.9846C9.76066 29.4738 13.7046 27.9692 18 27.9692C22.2954 27.9692 26.2393 29.4738 29.3337 31.9846Z" fill="#fff"/>'+
+  '<path fill-rule="evenodd" clip-rule="evenodd" d="M6.56764 27.6399C4.37046 25.0369 3.04615 21.6731 3.04615 18C3.04615 9.74122 9.74122 3.04615 18 3.04615C26.2588 3.04615 32.9538 9.74122 32.9538 18C32.9538 21.6731 31.6295 25.0369 29.4324 27.6399C30.1883 28.1123 30.9128 28.6299 31.602 29.1892C34.3184 26.0035 35.9999 21.8926 35.9999 18C35.9999 8.05888 27.9411 0 18 0C8.05888 0 0 8.05888 0 18C0 21.8926 1.68157 26.0035 4.39797 29.1892C5.08716 28.6299 5.81168 28.1123 6.56764 27.6399Z" fill="#fff"/>'+
+  '<circle cx="18" cy="17" r="6" fill="#fff"/>'+
+  '<text x="46" y="26" font-family="Inter,sans-serif" font-size="27" font-weight="700" letter-spacing="-1.1" fill="#fff">factorial</text>';
+
+/* the speaker cut-out: swap the file, keep the name */
+(function(){
+  const img = document.getElementById('jrelatore');
+  const tries = ['Relatore.png','Relatore.webp','Relatore.jpg','Relatore.jpeg','relatore.png'];
+  let i = 0;
+  img.addEventListener('load', ()=>img.classList.add('ready'));
+  img.addEventListener('error', ()=>{ if(++i < tries.length) img.src = tries[i]; });
+  img.src = tries[0];
+})();
+
+const trail = document.getElementById('jtrailWide');
+const core  = document.getElementById('jtrailCore');
+const TL = trail.getTotalLength();
+[trail, core].forEach(el=>{
+  el.style.strokeDasharray = TL;
+  el.style.strokeDashoffset = TL;
+});
+/* let the browser settle on "fully hidden" BEFORE the transition exists, or it
+   animates from 0 to TL on load and the trail appears to draw itself backwards */
+trail.getBoundingClientRect();
+[trail, core].forEach(el=>{
+  el.style.transition = 'stroke-dashoffset 0s linear';
+});
+
+/* the trail is paced by distance, so every hop travels at the same speed
+   instead of every hop taking the same time */
+const TRAIL_FULL = 4.0;           // seconds for the whole length
+let prevAt = 0, stepTimers = [];
+function clearStepTimers(){ stepTimers.splice(0).forEach(clearTimeout); }
+function revealTrail(at){
+  const delta = Math.abs(at - prevAt);
+  const dur = delta < 0.015 ? 0.15 : Math.max(0.5, TRAIL_FULL * delta);
+  [trail, core].forEach(el=>{
+    el.style.transitionDuration = dur + 's';
+    el.style.strokeDashoffset = TL * (1 - at);
+  });
+  const from = prevAt;
+  prevAt = at;
+  return {dur: dur * 1000, from: from, to: at};
+}
+/* find the point on the trail at a given height, so the tail can grow freely */
+function atForY(targetY){
+  let lo = 0, hi = 1;
+  for(let i = 0; i < 40; i++){
+    const mid = (lo + hi) / 2;
+    if(trail.getPointAtLength(TL * mid).y > targetY) lo = mid; else hi = mid;
+  }
+  return (lo + hi) / 2;
+}
+STOPS.forEach(st=>{ st.at = atForY(st.y); });
+const PT = STOPS.map(st=>trail.getPointAtLength(TL * st.at));
+
+let slot = 0;
+const allCards = [];
+STOPS.forEach((st,si)=>{
+  const p = document.createElement('div');
+  p.className='jpin'; p.dataset.i = si+1;
+  p.style.left = PT[si].x+'px'; p.style.top = PT[si].y+'px';
+  p.innerHTML =
+    '<div class="dot"></div>' + (st.yr ? '<span class="yr">'+st.yr+'</span>' : '');
+  document.getElementById('jpins').appendChild(p);
+
+  const f = document.createElement('div');
+  f.className='jphrase'; f.dataset.i = si+1;
+  f.innerHTML =
+    '<svg class="halo" viewBox="0 0 400 150" preserveAspectRatio="none">'+
+      '<g filter="url(#jhalo)" fill="#fff" fill-opacity=".14">'+
+        '<ellipse cx="120" cy="84" rx="98" ry="48"/>'+
+        '<ellipse cx="212" cy="62" rx="90" ry="44"/>'+
+        '<ellipse cx="288" cy="86" rx="82" ry="42"/>'+
+      '</g></svg><p class="jtype"></p>';
+  document.getElementById('jphrases').appendChild(f);
+
+  st.mods.forEach(m=>{
+    const col = Math.floor(slot/ROWS), row = slot % ROWS; slot++;
+    const c = document.createElement('div');
+    c.className='jcard'; c.dataset.i = si+1;
+    c.style.left = COL_X[col]+'px';
+    c.style.top  = (ROW_TOP + row*PITCH)+'px';
+    c.innerHTML =
+      '<div class="jtile" style="background:'+m[2]+'">'+
+        '<svg viewBox="0 0 24 24" fill="none" stroke="'+m[3]+'" stroke-width="2" '+
+        'stroke-linecap="round" stroke-linejoin="round">'+I[m[0]]+'</svg>'+
+      '</div><span class="jlabel">'+m[1]+'</span>';
+    cardsWrap.appendChild(c);
+    allCards.push(c);
+  });
+});
+
+document.querySelectorAll('.jphrase').forEach(f=>
+  seedPhrase(f.querySelector('p'), STOPS[+f.dataset.i - 1].text, 0));
+requestAnimationFrame(()=>{
+  document.querySelectorAll('.jphrase').forEach(f=>{
+    const i = +f.dataset.i - 1, h = f.offsetHeight;
+    f.style.top = Math.max(130, Math.min(PT[i].y - h/2, 740 - h)) + 'px';
+  });
+});
+
+const jhub   = document.getElementById('jhub');
+const jword  = document.getElementById('jword');
+const WORD_TEXT = 'Scopriamo insieme i nuovi moduli di IT\u2026';
+
+/* typed part + hidden remainder: the block is its final size from frame one */
+function seedPhrase(el, txt, n){
+  el.innerHTML = '<span class="shown"></span><span class="ghost"></span>';
+  el.firstChild.textContent = txt.slice(0, n);
+  el.lastChild.textContent  = txt.slice(n);
+}
+let typeSeq = 0;
+function typePhrase(el, txt){
+  const mine = ++typeSeq;
+  el.classList.add('typing');
+  seedPhrase(el, txt, 0);
+  const speed = txt.length > 40 ? 24 : 34;
+  (function tick(){
+    if(mine !== typeSeq) return;
+    const n = el.firstChild.textContent.length + 1;
+    seedPhrase(el, txt, n);
+    if(n < txt.length) setTimeout(tick, speed);
+    else setTimeout(()=>{ if(mine === typeSeq) el.classList.remove('typing'); }, 650);
+  })();
+}
+function stopTyping(){ typeSeq++; }
+seedPhrase(jword.querySelector('p'), WORD_TEXT, 0);
+function showHandover(){
+  jhub.classList.remove('on'); void jhub.offsetWidth;   // rewind the pop
+  jhub.classList.add('on');
+  setTimeout(()=>{
+    if(step !== 4) return;
+    jword.classList.add('on');
+    typePhrase(jword.querySelector('p'), WORD_TEXT);
+  }, 560);
+}
+function resetHandover(){
+  jhub.classList.remove('on');
+  jword.classList.remove('on');
+  seedPhrase(jword.querySelector('p'), WORD_TEXT, 0);
+  jword.querySelector('p').classList.remove('typing');
+}
+
+/* 0 cover · 1-3 timeline · 4 handover · 5 the map */
+const LAST = 5;
+let step = 0;
+function render(){
+  document.getElementById('jcover').classList.toggle('on', step === 0);
+  document.getElementById('jcover').classList.toggle('leaving', step > 0);
+  document.getElementById('jjourney').classList.toggle('on', step >= 1 && step <= 3);
+
+  clearStepTimers();
+
+  const at = step === 3 ? 1 : ((step >= 1 && step <= 3) ? STOPS[step-1].at : (step > 3 ? 1 : 0));
+  const ride = revealTrail(at);
+
+  /* anything from an earlier step is simply there; only the current step waits */
+  document.querySelectorAll('.jpin').forEach(p=>
+    p.classList.toggle('on', step >= 1 && step <= 3 && +p.dataset.i < step));
+
+  document.querySelectorAll('.jphrase').forEach(f=>{
+    const n = +f.dataset.i, el = f.querySelector('p'), txt = STOPS[n-1].text;
+    f.classList.toggle('on',   step >= 1 && step <= 3 && n < step);
+    f.classList.toggle('past', n < step);
+    if(n < step){
+      el.classList.remove('typing'); seedPhrase(el, txt, txt.length); f.dataset.typed = '1';
+    }else{
+      el.classList.remove('typing'); seedPhrase(el, txt, 0); f.dataset.typed = '';
+    }
+  });
+
+  if(step >= 1 && step <= 3){
+    resetHandover();
+    allCards.forEach((c,idx)=>{
+      const n = +c.dataset.i;
+      c.classList.toggle('on', n < step);
+      c.classList.toggle('past', n < step);
+      c.classList.remove('gone');
+      const col = Math.floor(idx/ROWS), row = idx % ROWS;
+      c.style.left = COL_X[col]+'px';
+      c.style.top  = (ROW_TOP + row*PITCH)+'px';
+    });
+
+    /* the dot lands when the line actually reaches it, not when the tail ends */
+    const stopAt = STOPS[step-1].at;
+    const span = ride.to - ride.from;
+    const share = span === 0 ? 1 : Math.min(1, Math.max(0, (stopAt - ride.from) / span));
+    stepTimers.push(setTimeout(()=>{
+      const pin = document.querySelector('.jpin[data-i="'+step+'"]');
+      if(pin) pin.classList.add('on');
+      stepTimers.push(setTimeout(()=>{
+        const f = document.querySelector('.jphrase[data-i="'+step+'"]');
+        if(f){
+          f.classList.add('on');
+          f.dataset.typed = '1';
+          typePhrase(f.querySelector('p'), STOPS[step-1].text);
+        }
+        allCards.forEach(c=>{ if(+c.dataset.i === step) c.classList.add('on'); });
+      }, 380));
+    }, ride.dur * share));
+  }
+
+  if(step === 4){
+    const finale = allCards.filter(c=>+c.dataset.i === STOPS.length);
+    const top0 = Math.round((900 - (finale.length*PITCH - (PITCH-76))) / 2);
+    allCards.forEach(c=>{ if(+c.dataset.i !== STOPS.length) c.classList.add('gone'); });
+    finale.forEach((c,k)=>{
+      c.classList.remove('gone','past'); c.classList.add('on');
+      c.style.left = '332px';
+      c.style.top  = (top0 + k*PITCH)+'px';
+    });
+    setTimeout(()=>{ if(step === 4) showHandover(); }, 820);
+  }
+
+  if(step === LAST){
+    /* the avatar must not blink: fade only what surrounds it, then swap the two
+       boards in a single frame. Both draw the same figure at the same 802,419. */
+    jword.classList.remove('on');
+    allCards.forEach(c=>c.classList.add('gone'));
+    window.J_ACTIVE = false;
+    if(typeof fit === 'function') fit();
+    if(typeof reset === 'function') reset();     // hub is already .on: no pop replays
+    setTimeout(()=>{
+      if(step !== LAST) return;
+      mwrap.classList.add('instant'); jwrap.classList.add('instant');
+      mwrap.classList.add('on');  jwrap.classList.add('gone');
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{
+        mwrap.classList.remove('instant'); jwrap.classList.remove('instant');
+        jhub.classList.remove('on');
+      }));
+      window.J_SEAMLESS = true;                  // same click opens the first block
+      if(typeof play === 'function') play();
+    }, 460);
+  }else{
+    jwrap.classList.remove('gone');
+    mwrap.classList.remove('on');
+    window.J_ACTIVE = true;
+  }
+
+}
+
+function go(n){
+  const prev = step;
+  step = Math.max(0, Math.min(LAST, n));
+  if(step !== prev) render();
+}
+
+jwrap.addEventListener('click', ()=>{ if(step < LAST) go(step+1); });
+document.addEventListener('keydown', e=>{
+  if(!window.J_ACTIVE) return;              // from the map onwards its own keys take over
+  if(e.key === 'ArrowRight' || e.key === ' '){ e.preventDefault(); go(step+1); }
+  if(e.key === 'ArrowLeft'){ e.preventDefault(); go(step-1); }
+  if(e.key === 'r' || e.key === 'R'){ go(0); }
+});
+
+function jfit(){
+  const k = Math.min(innerWidth/1600, innerHeight/900);
+  jstage.style.transform = 'scale('+k+')';
+}
+addEventListener('resize', jfit);
+jfit();
+render();
+
+})();
+</script>
+
+<script>
+/* ============================================================
+   PART 3 — the ecosystem map's own script, unchanged
+   ============================================================ */
+
 /* ---------------- icons ---------------- */
 const I = {
   monitor:'<path d="M3 4h18v12H3z"/><path d="M8 20h8M12 16v4"/>',
@@ -526,7 +1067,10 @@ async function play(){
   const token = ++run;
   paused = false; done = false; turbo = false; openGates();
   playing = true; syncBtn(); poke();
-  document.querySelectorAll('.card,.chip,#hub,#one').forEach(e=>e.classList.remove('on'));
+  /* on a seamless handover the avatar is already on screen: leave it alone,
+     or removing and re-adding .on would replay its pop and make it blink */
+  document.querySelectorAll(window.J_SEAMLESS ? '.card,.chip,#one' : '.card,.chip,#hub,#one')
+    .forEach(e=>e.classList.remove('on'));
   document.querySelectorAll('.label').forEach(l=>{seed(l,0); l.classList.remove('typing');});
   layoutWires();
 
@@ -539,9 +1083,14 @@ async function play(){
   }
 
   const hubEl = document.getElementById('hub');
-  hubEl.classList.remove('on'); void hubEl.offsetWidth;   // rewind the pop
-  hubEl.classList.add('on');
-  await wait(700);
+  if(window.J_SEAMLESS){                 // handed over from the journey: it is already there
+    window.J_SEAMLESS = false;
+    hubEl.classList.add('on');
+  }else{
+    hubEl.classList.remove('on'); void hubEl.offsetWidth;   // rewind the pop
+    hubEl.classList.add('on');
+    await wait(700);
+  }
 
   for(const b of BRANCHES){
     if(token!==run) return;
@@ -757,6 +1306,7 @@ modal.addEventListener('click', e=>{ if(e.target === modal) closeModal(); });
 modal.querySelector('.x').onclick = closeModal;
 
 addEventListener('keydown', e=>{
+  if(window.J_ACTIVE) return;   // the journey is still on screen
   if(modalOpen){                       // the overlay owns the keyboard while it is up
     if(e.key === 'Escape'){ e.preventDefault(); closeModal(); }
     else if(e.key === ' '){ e.preventDefault(); demo.paused ? demo.play() : demo.pause(); }
@@ -775,7 +1325,8 @@ addEventListener('keydown', e=>{
 document.fonts.ready.then(()=>{
   langBtn.textContent = lang.toUpperCase();
   langBtn.title = I18N[lang].name;
-  if(reduced) play();          // no animation to wait for: show the finished board
-  else reset();                // otherwise sit still until Play or Space
+  reset();                     // sit still; the journey reveals the board when it is ready
 });
 </script>
+</body>
+</html>
