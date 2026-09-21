@@ -266,13 +266,21 @@
   }
   #jcover.leaving #jlogo{animation:none;opacity:0;transform:scale(1.06);
     transition:opacity .4s ease, transform .5s cubic-bezier(.4,0,.2,1)}
-  #jrelatore{
-    position:absolute;right:28px;bottom:0;height:165px;width:auto;display:block;
+  /* speakers: the main one in front, the second tucked 10% underneath to its right */
+  #jspeakers{
+    position:absolute;right:28px;bottom:0;
+    display:flex;align-items:flex-end;
+  }
+  #jspeakers img{
+    height:165px;width:auto;display:none;position:relative;
     filter:drop-shadow(0 26px 46px rgba(120,0,30,.34));
     opacity:0;transform:translateY(26px);
     transition:opacity .7s ease .35s, transform .7s cubic-bezier(.2,.9,.25,1.05) .35s;
   }
-  #jrelatore.ready{opacity:1;transform:translateY(0)}
+  #jspeakers img.shown{display:block}
+  #jspeakers img.ready{opacity:1;transform:translateY(0)}
+  #jrelatore{z-index:2}
+  #jrelatore2{z-index:1;transition-delay:.5s,.5s}
   /* ---- timeline ---- */
   #jtrail{position:absolute;inset:0;width:1600px;height:900px;pointer-events:none}
   .jpin{
@@ -367,7 +375,10 @@
 
     <div class="jscene on" id="jcover">
       <svg id="jlogo" viewBox="0 0 172 36" fill="none" xmlns="http://www.w3.org/2000/svg"></svg>
-      <img id="jrelatore" alt="">
+      <div id="jspeakers">
+        <img id="jrelatore" alt="">
+        <img id="jrelatore2" alt="">
+      </div>
     </div>
 
     <div class="jscene" id="jjourney">
@@ -529,15 +540,28 @@ document.getElementById('jlogo').innerHTML =
   '<circle cx="18" cy="17" r="6" fill="#fff"/>'+
   '<text x="46" y="26" font-family="Inter,sans-serif" font-size="27" font-weight="700" letter-spacing="-1.1" fill="#fff">factorial</text>';
 
-/* the speaker cut-out: swap the file, keep the name */
-(function(){
-  const img = document.getElementById('jrelatore');
-  const tries = ['Relatore.png','Relatore.webp','Relatore.jpg','Relatore.jpeg','relatore.png'];
+/* speaker cut-outs: swap the file, keep the name.
+   Main speaker  -> Relatore.png   (capital R)
+   Second        -> relatore.png   (lower-case r)
+   The two lists never share a name, so one can't stand in for the other. */
+function loadSpeaker(id, tries, onReady){
+  const img = document.getElementById(id);
   let i = 0;
-  img.addEventListener('load', ()=>img.classList.add('ready'));
+  img.addEventListener('load', ()=>{
+    img.classList.add('shown');
+    if(onReady) onReady(img);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>img.classList.add('ready')));
+  });
   img.addEventListener('error', ()=>{ if(++i < tries.length) img.src = tries[i]; });
   img.src = tries[0];
-})();
+}
+loadSpeaker('jrelatore',  ['Relatore.png','Relatore.webp','Relatore.jpg','Relatore.jpeg']);
+loadSpeaker('jrelatore2', ['relatore.png','relatore.webp','relatore.jpg','relatore.jpeg'],
+  img => {                                   // slide 10% of its own width under the main one
+    const w = img.getBoundingClientRect().width / (document.getElementById('jstage')
+              .getBoundingClientRect().width / 1600);
+    img.style.marginLeft = (-0.10 * w) + 'px';
+  });
 
 const trail = document.getElementById('jtrailWide');
 const core  = document.getElementById('jtrailCore');
