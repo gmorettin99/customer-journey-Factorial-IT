@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" translate="no">
 <head>
 <meta charset="utf-8">
+<meta name="google" content="notranslate">
 <title>Factorial IT — Client Journey to digitalisation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -268,7 +269,7 @@
     transition:opacity .4s ease, transform .5s cubic-bezier(.4,0,.2,1)}
   /* speakers: the main one in front, the second tucked 10% underneath to its right */
   #jspeakers{
-    position:absolute;right:28px;bottom:0;
+    position:absolute;right:58px;bottom:72px;   /* feet on the frame line (inset 70px + 2px border) */
     display:flex;align-items:flex-end;
   }
   #jspeakers img{
@@ -389,7 +390,7 @@
           <filter id="jhalo" x="-30%" y="-50%" width="160%" height="200%"><feGaussianBlur stdDeviation="26"/></filter>
           <linearGradient id="jfadeW" x1="0" y1="1" x2="0" y2="0">
             <stop offset="0%" stop-color="#fff" stop-opacity=".20"/>
-            <stop offset="70%" stop-color="#fff" stop-opacity=".20"/>
+            <stop offset="82%" stop-color="#fff" stop-opacity=".20"/>
             <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
           </linearGradient>
           <linearGradient id="jfadeC" x1="0" y1="1" x2="0" y2="0">
@@ -541,9 +542,9 @@ document.getElementById('jlogo').innerHTML =
   '<text x="46" y="26" font-family="Inter,sans-serif" font-size="27" font-weight="700" letter-spacing="-1.1" fill="#fff">factorial</text>';
 
 /* speaker cut-outs: swap the file, keep the name.
-   Main speaker  -> Relatore.png   (capital R)
-   Second        -> relatore.png   (lower-case r)
-   The two lists never share a name, so one can't stand in for the other. */
+   Main speaker  -> Relatore.png
+   Second        -> Relatore2.png
+   Not Relatore / relatore: a Mac disk treats those as the same file. */
 function loadSpeaker(id, tries, onReady){
   const img = document.getElementById(id);
   let i = 0;
@@ -556,7 +557,7 @@ function loadSpeaker(id, tries, onReady){
   img.src = tries[0];
 }
 loadSpeaker('jrelatore',  ['Relatore.png','Relatore.webp','Relatore.jpg','Relatore.jpeg']);
-loadSpeaker('jrelatore2', ['relatore.png','relatore.webp','relatore.jpg','relatore.jpeg'],
+loadSpeaker('jrelatore2', ['Relatore2.png','Relatore2.webp','Relatore2.jpg','Relatore2.jpeg'],
   img => {                                   // slide 10% of its own width under the main one
     const w = img.getBoundingClientRect().width / (document.getElementById('jstage')
               .getBoundingClientRect().width / 1600);
