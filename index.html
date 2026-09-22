@@ -115,9 +115,9 @@
 
   /* ---------- demo video overlay ---------- */
   #b-inventario .card, #b-marketplace .card, #b-saas .card, #b-helpdesk .card,
-  #b-dispositivi .card, #b-certificazioni .card{cursor:pointer}
+  #b-dispositivi .card, #b-certificazioni .card, #b-sicurezza .card{cursor:pointer}
   #b-inventario .card:hover, #b-marketplace .card:hover, #b-saas .card:hover,
-  #b-helpdesk .card:hover, #b-dispositivi .card:hover, #b-certificazioni .card:hover{
+  #b-helpdesk .card:hover, #b-dispositivi .card:hover, #b-certificazioni .card:hover, #b-sicurezza .card:hover{
     box-shadow:0 18px 42px rgba(120,0,30,.30), 0 2px 8px rgba(120,0,30,.14);
   }
   #modal{
@@ -1280,7 +1280,8 @@ const CLIPS = {
   saas:        ['saas-one.mp4',        'saas-spending-one.mov'],
   helpdesk:    ['helpdesk-one.mp4',    'ticketing-one.mov'],
   dispositivi: ['dispositivi-one.mp4', 'Update-OS-via-ONE.mov'],
-  certificazioni: ['certificazioni-one.mp4', 'conformita_-ISO-via-ONE.mov']
+  certificazioni: ['certificazioni-one.mp4', 'conformita_-ISO-via-ONE.mov'],
+  sicurezza: ['sicurezza-one.mp4']
 };
 let currentClip = '';
 const fallback = modal.querySelector('.fallback');
